@@ -1,0 +1,6 @@
+{
+    "C_Cpp.default.compilerPath": "/home/garytzj/newgate/testdemo/hello.c",
+    "files.associations": {
+        "hello.h": "c"
+    }
+}
