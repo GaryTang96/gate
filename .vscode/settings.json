@@ -5,6 +5,8 @@
         "log.h": "c",
         "stdio.h": "c",
         "mqttclient.h": "c",
-        "app_common.h": "c"
+        "app_common.h": "c",
+        "mqueue.h": "c",
+        "app_pool.h": "c"
     }
 }

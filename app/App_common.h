@@ -4,8 +4,9 @@
 #include "string.h"
 #include "stdio.h"
 #include "stdint.h"
-#include "log.h"
 #include "stdbool.h"
+#include "stdlib.h"
+#include "log.h"
 #include "unistd.h"
 
 

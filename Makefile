@@ -23,3 +23,16 @@ queue_test: test/test_queue.c $(log)
 	-@$(CC) $^ -o $@ -Ithirdparty -Iapp
 	-@./$@
 	-@rm -rf $@
+
+
+thread_mqueue_test: test/test_queue.c $(log) 
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp
+	-@./$@
+	-@rm -rf $@
+
+
+app_pool := app/App_pool.c app/App_pool.h
+app_pool_test: test/app_pool_test.c $(log) $(app_pool)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp 
+	-@./$@
+	-@rm -rf $@
