@@ -1,6 +1,9 @@
 {
     "C_Cpp.default.compilerPath": "/home/garytzj/newgate/testdemo/hello.c",
     "files.associations": {
-        "hello.h": "c"
+        "hello.h": "c",
+        "log.h": "c",
+        "stdio.h": "c",
+        "mqttclient.h": "c"
     }
 }
