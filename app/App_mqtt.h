@@ -10,7 +10,7 @@ gate_status_t App_mqtt_init( void(*recve_cb)(char* data , int dataLen) );
 
 gate_status_t App_mqtt_Send( char* str );
 
-
+gate_status_t App_mqtt_deInit( void );
 
 
 #endif

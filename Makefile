@@ -17,3 +17,9 @@ mqtt_test: test/testmqtt.c $(log) $(mqtt) $(cjson)
 	-@$(CC) $^ -o $@ -Ithirdparty -Iapp -lpaho-mqtt3c
 	-@./$@
 	-@rm -rf $@
+
+
+queue_test: test/test_queue.c $(log) 
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp
+	-@./$@
+	-@rm -rf $@

@@ -26,18 +26,18 @@ void connectionLost_cb( void* context , char* cause ) {
         MQTTClient_connectOptions connectOptions = MQTTClient_connectOptions_initializer;
         if (MQTTClient_connect( app_mqtt_t.mqttClient , &connectOptions ) != MQTTCLIENT_SUCCESS) {
 
-            log_error( "mqtt client connect fail" );
+            log_error( "mqtt  Reconnect fail" );
 
         }
-        log_info( "mqtt client connect ok" );
+        log_info( "mqtt  Reconnect ok" );
 
         //  by Gary: 订阅
         if (MQTTClient_subscribe( app_mqtt_t.mqttClient , TOPIC_PULL , MQTTREASONCODE_GRANTED_QOS_0 ) != MQTTCLIENT_SUCCESS) {
 
-            log_error( "mqtt subscribe TOPIC: %s fail" , TOPIC_PULL );
+            log_error( "mqtt Resubscribe TOPIC: %s fail" , TOPIC_PULL );
 
         } else {
-            log_info( "mqtt subscribe TOPIC: %s ok" , TOPIC_PULL );
+            log_info( "mqtt Resubscribe TOPIC: %s ok" , TOPIC_PULL );
             break;
         }
     }
@@ -71,7 +71,7 @@ int messageArrived_cb( void* context , char* topicName , int topicLen , MQTTClie
  * @param 	 dt
  */
 void deliveryComplete_cb( void* context , MQTTClient_deliveryToken dt ) {
-    log_debug( "delivery_complete_cb: %d" , dt );
+    log_info( "delivery_complete_cb: %d" , dt );
 }
 /***********************   call back  end  **********************/
 
@@ -155,6 +155,17 @@ gate_status_t App_mqtt_Send( char* str ) {
         return ERROR;
     }
     log_info( "mqtt Send ok  dataLen=%d" , strlen( str ) );
+
+    return OK;
+}
+
+gate_status_t App_mqtt_deInit( void ) {
+    //  by Gary: 取消订阅
+    MQTTClient_unsubscribe( app_mqtt_t.mqttClient , TOPIC_PULL );
+    //  by Gary: 断开连接
+    MQTTClient_disconnect( app_mqtt_t.mqttClient , 2000 );
+    //  by Gary: 销毁客户端
+    MQTTClient_destroy( &app_mqtt_t.mqttClient );
 
     return OK;
 }

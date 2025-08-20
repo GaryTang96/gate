@@ -22,7 +22,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/test"
+                "${workspaceFolder}/test",
+                "${workspaceFolder}/thirdparty",
+                // "/usr/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
