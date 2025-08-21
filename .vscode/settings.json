@@ -1,5 +1,5 @@
 {
-    "C_Cpp.default.compilerPath": "/home/garytzj/newgate/testdemo/hello.c",
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
     "files.associations": {
         "hello.h": "c",
         "log.h": "c",
@@ -7,6 +7,9 @@
         "mqttclient.h": "c",
         "app_common.h": "c",
         "mqueue.h": "c",
-        "app_pool.h": "c"
-    }
+        "app_pool.h": "c",
+        "string.h": "c"
+    },
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.mouseWheelZoom": true
 }
