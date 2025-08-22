@@ -141,7 +141,7 @@ void modbus_rw_task_cb( void* args ) {
             log_info( "msg: %s, %s, %d, %d, %s" , msg_st.action , msg_st.connType , msg_st.motorID , msg_st.motorSpeed , msg_st.status );
 
             if (strcmp( msg_st.action , "set" ) == 0) {
-                // TODO   todo
+                // TODO
 
             } else if (strcmp( msg_st.action , "get" ) == 0) {
                 // TODO
