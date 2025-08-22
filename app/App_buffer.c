@@ -50,6 +50,7 @@ App_buffer_st* App_buffer_init( uint16_t capacity ) {
     pthread_mutex_init( &buffer->r_lock , NULL ); //  by Gary: 初始化读写锁
     pthread_mutex_init( &buffer->w_lock , NULL );
 
+    return buffer;
 }
 
 void App_buff_deInit( App_buffer_st* buffer ) {
@@ -59,8 +60,8 @@ void App_buff_deInit( App_buffer_st* buffer ) {
     free( buffer->sub_buffer_t[1]->ptr );
     free( buffer->sub_buffer_t[1] );
 
-    free( &buffer->r_lock );
-    free( &buffer->w_lock );
+    pthread_mutex_destroy( &buffer->r_lock );   //  by Gary: 锁的释放
+    pthread_mutex_destroy( &buffer->w_lock );
 
     free( buffer );
 }
@@ -90,7 +91,7 @@ gate_status_t App_buff_write( App_buffer_st* buffer , uint8_t* data , uint8_t da
     //  by Gary: +1 代表的是data_len这个字节
     memcpy( subBuf->ptr + subBuf->len + 1 , data , data_len );
     //  by Gary: +1 代表的是data_len这个字节
-    subBuf->len = data_len + 1;
+    subBuf->len += data_len + 1;
 
     pthread_mutex_unlock( &buffer->w_lock );
     log_info( "写缓冲成功,已释放锁" );
@@ -111,6 +112,7 @@ uint8_t app_buffer_read( App_buffer_st* master_buffer , uint8_t* data , int data
     //  by Gary: 找到写缓冲
     sub_buffer_st* sub_buf = master_buffer->sub_buffer_t[master_buffer->r_index];
     if (sub_buf->len == 0) {//  by Gary: 读完了需要交换缓冲区  写满了直接进行报错
+        // log_info("交换");
         pthread_mutex_lock( &master_buffer->w_lock );
         uint16_t temp = master_buffer->r_index;
         master_buffer->r_index = master_buffer->w_index;
@@ -119,7 +121,7 @@ uint8_t app_buffer_read( App_buffer_st* master_buffer , uint8_t* data , int data
         //  by Gary: 交换完成重新赋值
         sub_buf = master_buffer->sub_buffer_t[master_buffer->r_index];
         if (sub_buf->len == 0) {
-            log_error( "缓冲区为空" );
+            // log_warn( "缓冲区为空, 读数据失败" );
             pthread_mutex_unlock( &master_buffer->r_lock );
             return 0;
         }
@@ -137,10 +139,12 @@ uint8_t app_buffer_read( App_buffer_st* master_buffer , uint8_t* data , int data
     memcpy( data , sub_buf->ptr + 1 , real_data_len );
 
     //  by Gary: 将后面的数据进行前移 source: 指针长度向后位移real_data_len + 1 
-    memmove( sub_buf->ptr , sub_buf->ptr + real_data_len + 1 , real_data_len + 1 );//different with teacher
+    //  different with teacher
+    memmove( sub_buf->ptr , sub_buf->ptr + real_data_len + 1 , real_data_len + 1 );
+    // memmove( sub_buf->ptr , sub_buf->ptr + real_data_len + 1 , sub_buf->len - real_data_len - 1 );
 
     //  by Gary: 位移了多少 更新一下新已存储长度的长度
-    sub_buf->len -= real_data_len + 1; 
+    sub_buf->len -= real_data_len + 1;
 
     pthread_mutex_unlock( &master_buffer->r_lock );
     return real_data_len;

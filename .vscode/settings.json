@@ -1,6 +1,7 @@
 {
     "C_Cpp.default.compilerPath": "/usr/bin/gcc",
     "files.associations": {
+        "*.c": "c",
         "hello.h": "c",
         "log.h": "c",
         "stdio.h": "c",
@@ -8,7 +9,8 @@
         "app_common.h": "c",
         "mqueue.h": "c",
         "app_pool.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "strings.h": "c"
     },
     "editor.mouseWheelZoom": true,
     "terminal.integrated.mouseWheelZoom": true

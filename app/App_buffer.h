@@ -32,5 +32,9 @@ App_buffer_st* App_buffer_init( uint16_t capacity );
 
 void App_buff_deInit( App_buffer_st* buffer );
 
+gate_status_t App_buff_write( App_buffer_st* buffer , uint8_t* data , uint8_t data_len );
+
+uint8_t app_buffer_read( App_buffer_st* master_buffer , uint8_t* data , int data_read_max_capacity );
+
 
 #endif

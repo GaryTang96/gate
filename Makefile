@@ -36,3 +36,21 @@ app_pool_test: test/app_pool_test.c $(log) $(app_pool)
 	-@$(CC) $^ -o $@ -Ithirdparty -Iapp 
 	-@./$@
 	-@rm -rf $@
+
+
+
+app_buff := app/App_buffer.c app/App_buffer.h
+app_buff_test: test/app_buff_test.c $(log) $(app_buff)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp 
+	-@./$@
+	-@rm -rf $@
+
+
+message := app/App_msg.c app/App_msg.h
+device := app/App_device.c app/App_device.h
+cjson := thirdparty/cJSON.c thirdparty/cJSON.h
+common := app/App_common.c app/App_common.h
+device_test: test/app_device_test.c  $(common) $(cjson) $(log) $(mqtt) $(app_buff) $(app_pool) $(device) $(message)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp  -lpaho-mqtt3c
+	-./$@
+	-@rm -rf $@

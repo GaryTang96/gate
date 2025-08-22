@@ -148,7 +148,7 @@ gate_status_t App_mqtt_Send( char* str ) {
         strlen( str ) ,
         (void*)str ,
         1 ,
-        NULL ,
+        0 ,
         NULL
     ) != MQTTCLIENT_SUCCESS) {
         log_error( "mqtt Send fail" );

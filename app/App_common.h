@@ -18,6 +18,6 @@ typedef enum{
 } gate_status_t;
 
 
-
+char* my_strdup( const char* s );
 
 #endif
