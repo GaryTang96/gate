@@ -10,7 +10,8 @@
         "mqueue.h": "c",
         "app_pool.h": "c",
         "string.h": "c",
-        "strings.h": "c"
+        "strings.h": "c",
+        "app_device.h": "c"
     },
     "editor.mouseWheelZoom": true,
     "terminal.integrated.mouseWheelZoom": true

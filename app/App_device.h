@@ -6,6 +6,7 @@
 #include "App_buffer.h"
 #include "App_pool.h"
 #include "App_msg.h"
+#include "App_modbus.h"
 
 
 typedef void*  device_handle_st;

@@ -6,7 +6,8 @@
  * @brief
  */
 #include "App_device.h"
-//唐哥真帅5456464645kkk
+
+
 #define BUF_ZIZE   1024
 #define POOL_SIZE  10
 
@@ -80,13 +81,22 @@ device_handle_st App_device_init( void ) {
         App_buff_deInit( device->up_buf );
         App_buff_deInit( device->down_buf );
         free( device );
-        log_error( "modbus 任务 初始化 失败" );
+        log_error( "线程池 任务 初始化 失败" );
         return NULL;
     }
 
-    //  by Gary: mobus  init   TODO
-
-
+    //  by Gary: mobus  init  
+    sta = App_modbus_init();
+    if (sta != OK) {
+        App_pool_deInit();
+        App_mqtt_deInit();
+        App_buff_deInit( device->up_buf );
+        App_buff_deInit( device->down_buf );
+        App_modbus_deInit();
+        free( device );
+        log_error( "modbus 任务 初始化 失败" );
+        return NULL;
+    }
 
     device->is_running = true;
     return (device_handle_st)device;
@@ -140,23 +150,24 @@ void modbus_rw_task_cb( void* args ) {
             App_msg_json_2_msg( data_buff , &msg_st );
             log_info( "msg: %s, %s, %d, %d, %s" , msg_st.action , msg_st.connType , msg_st.motorID , msg_st.motorSpeed , msg_st.status );
 
-            if (strcmp( msg_st.action , "set" ) == 0) {
-                // TODO
-
+            // if (strcmp( msg_st.action , "set" ) == 0) {
+            if (strcmp( msg_st.status , "set" ) == 0) {
+                //  by Gary: 设置寄存器
+                App_modbus_write_single_hold_register( msg_st.motorID , 0 , (uint16_t)msg_st.motorSpeed );
             } else if (strcmp( msg_st.action , "get" ) == 0) {
-                // TODO
 
-                App_msg_st msg_st1 = {
-                    .connType = "modbus",
-                    .action = "get",
-                    .motorID = 1,
-                    .motorSpeed = 0,
-                    .status = "error"
-                };
+                //  by Gary: 读输入寄存器的值
+                gate_status_t err = App_modbus_read_single_input_register( msg_st.motorID , &msg_st.motorSpeed );
+                if (err == OK) {
+                    msg_st.status = "ok";
+                } else {
+                    msg_st.status = "error";
+                    msg_st.motorSpeed = 0;
+                }
 
                 //  by Gary: 清除
                 memset( data_buff , 0 , sizeof( data_buff ) );
-                App_msg_msg_2_json( data_buff , &msg_st1 );
+                App_msg_msg_2_json( data_buff , &msg_st );
                 App_buff_write( device->up_buf , data_buff , strlen( data_buff ) );
             }
         }
