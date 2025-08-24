@@ -6,3 +6,4 @@ sysroot.tar.gz
 *.s
 .vscode/
 output/
+*.tar.gz
