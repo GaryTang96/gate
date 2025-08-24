@@ -1,4 +1,6 @@
 *.tar.gz
+toolchain.tar.gz
+sysroot.tar.gz
 *.i
 *.o
 *.s
