@@ -1,0 +1,57 @@
+#	- 继续执行
+#	@ 隐藏命令
+#	$^ 引用 目标 全部
+#	$< 引用第一个
+CC:=gcc
+log := thirdparty/log.c thirdparty/log.h
+cjson := thirdparty/cJSON.c thirdparty/cJSON.h
+
+logtest: test/log_test.c $(log)
+	-@$(CC) $^ -o $@ -Ithirdparty
+	-@./$@
+	-@rm -rf $@
+
+
+mqtt := app/App_mqtt.c app/App_mqtt.h
+mqtt_test: test/testmqtt.c $(log) $(mqtt) $(cjson)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp -lpaho-mqtt3c
+	-@./$@
+	-@rm -rf $@
+
+
+queue_test: test/test_queue.c $(log) 
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp
+	-@./$@
+	-@rm -rf $@
+
+
+thread_mqueue_test: test/test_queue.c $(log) 
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp
+	-@./$@
+	-@rm -rf $@
+
+
+app_pool := app/App_pool.c app/App_pool.h
+app_pool_test: test/app_pool_test.c $(log) $(app_pool)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp 
+	-@./$@
+	-@rm -rf $@
+
+
+
+app_buff := app/App_buffer.c app/App_buffer.h
+app_buff_test: test/app_buff_test.c $(log) $(app_buff)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp 
+	-@./$@
+	-@rm -rf $@
+
+
+message := app/App_msg.c app/App_msg.h
+device := app/App_device.c app/App_device.h
+cjson := thirdparty/cJSON.c thirdparty/cJSON.h
+common := app/App_common.c app/App_common.h
+modbus := app/App_modbus.c app/App_modbus.h
+device_test: test/app_device_test.c $(device)   $(common) $(cjson) $(log) $(mqtt) $(app_pool) $(message) $(app_buff)
+	-@$(CC) $^ -o $@ -Ithirdparty -Iapp  -lpaho-mqtt3c
+	-./$@
+	-@rm -rf $@

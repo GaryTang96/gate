@@ -11,7 +11,8 @@
 
 typedef void*  device_handle_st;
 
-device_handle_st App_device_init(void);
+device_handle_st App_device_init( void );
+
 
 bool App_device_is_running( void );
 

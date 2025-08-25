@@ -148,16 +148,15 @@ void modbus_rw_task_cb( void* args ) {
             log_debug( "从下行缓冲区读到数据%.*s" , len , data_buff );
             App_msg_st msg_st;
             App_msg_json_2_msg( data_buff , &msg_st );
-            log_info( "msg: %s, %s, %d, %d, %s" , msg_st.action , msg_st.connType , msg_st.motorID , msg_st.motorSpeed , msg_st.status );
+            log_info( "msg: %s, %s, %d, %d, %s" , msg_st.action , msg_st.connType , msg_st.motorId , msg_st.motorSpeed , msg_st.status );
 
-            // if (strcmp( msg_st.action , "set" ) == 0) {
-            if (strcmp( msg_st.status , "set" ) == 0) {
+            if (strcmp( msg_st.action , "set" ) == 0) {
                 //  by Gary: 设置寄存器
-                App_modbus_write_single_hold_register( msg_st.motorID , 0 , (uint16_t)msg_st.motorSpeed );
+                App_modbus_write_single_hold_register( msg_st.motorId , 0 , (uint16_t)msg_st.motorSpeed );
             } else if (strcmp( msg_st.action , "get" ) == 0) {
 
                 //  by Gary: 读输入寄存器的值
-                gate_status_t err = App_modbus_read_single_input_register( msg_st.motorID , &msg_st.motorSpeed );
+                gate_status_t err = App_modbus_read_single_input_register( msg_st.motorId , &msg_st.motorSpeed );
                 if (err == OK) {
                     msg_st.status = "ok";
                 } else {

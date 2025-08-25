@@ -8,7 +8,7 @@ typedef struct {
 App_mqtt_t app_mqtt_t;
 
 
-#define SERVER_URI "tcp://192.168.56.45:1883"
+#define SERVER_URI "tcp://192.168.56.56:1883"
 #define CLIENT_ID "garygate"
 #define TOPIC_PULL "pull"
 #define TOPIC_PUSH "push"
@@ -119,6 +119,7 @@ gate_status_t App_mqtt_init( void(*recve_cb)(char* data , int dataLen) ) {
     if (MQTTClient_connect( app_mqtt_t.mqttClient , &connectOptions ) != MQTTCLIENT_SUCCESS) {
 
         log_error( "mqtt client connect fail" );
+        perror( "mqtt client connect fail" );
         return ERROR;
 
     }

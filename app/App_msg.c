@@ -16,19 +16,19 @@ gate_status_t App_msg_json_2_msg( char* json , App_msg_st* msg ) {
     }
 
     cJSON* connType_json = cJSON_GetObjectItem( root , "connType" );
-    cJSON* motorID_json = cJSON_GetObjectItem( root , "motorID" );
+    cJSON* motorId_json = cJSON_GetObjectItem( root , "motorId" );
     cJSON* action_json = cJSON_GetObjectItem( root , "action" );
     cJSON* motorSpeed_json = cJSON_GetObjectItem( root , "motorSpeed" );
     cJSON* status_json = cJSON_GetObjectItem( root , "status" );
 
-    if (connType_json == NULL || motorID_json == NULL || action_json == NULL) {
+    if (connType_json == NULL || motorId_json == NULL || action_json == NULL) {
         cJSON_Delete( root );
         log_error( "json 解析失败" );
         return ERROR;
     }
 
     msg->connType = my_strdup( connType_json->valuestring );
-    msg->motorID = motorID_json->valueint;
+    msg->motorId = motorId_json->valueint;
     msg->action = my_strdup( action_json->valuestring );
 
     if (status_json != NULL) {
@@ -52,7 +52,7 @@ gate_status_t App_msg_msg_2_json( char* json , App_msg_st* msg ) {
 
     cJSON_AddStringToObject( root , "connType" , msg->connType );
     cJSON_AddStringToObject( root , "action" , msg->action );
-    cJSON_AddNumberToObject( root , "motorID" , msg->motorID );
+    cJSON_AddNumberToObject( root , "motorId" , msg->motorId );
     cJSON_AddNumberToObject( root , "motorSpeed" , msg->motorSpeed );
 
     if (msg->status != NULL) {

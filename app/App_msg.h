@@ -6,7 +6,7 @@
 
 typedef struct {
     char* connType;
-    uint8_t motorID;
+    uint8_t motorId;
     char* action;
     int16_t motorSpeed;
     char* status;

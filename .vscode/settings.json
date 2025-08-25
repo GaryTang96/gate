@@ -11,7 +11,9 @@
         "app_pool.h": "c",
         "string.h": "c",
         "strings.h": "c",
-        "app_device.h": "c"
+        "app_device.h": "c",
+        "app_mqtt.h": "c",
+        "app_modbus.h": "c"
     },
     "editor.mouseWheelZoom": true,
     "terminal.integrated.mouseWheelZoom": true

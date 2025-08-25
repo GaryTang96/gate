@@ -20,7 +20,7 @@ gate_status_t App_modbus_init( void ) {
         return OK;
     }
 
-    modbus = modbus_new_rtu( "/dev/ttys1" , 115200 , 'N' , 8 , 1 );
+    modbus = modbus_new_rtu( "/dev/ttyS1" , 115200 , 'N' , 8 , 1 );
 
     if (modbus == NULL) {
         log_error( "modbus上下文创建失败" );
