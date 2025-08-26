@@ -2,7 +2,6 @@
 *.i
 *.o
 *.s
-.vscode/
 output/
 toolchain/
 sysroot/

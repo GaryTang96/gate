@@ -102,6 +102,21 @@ device_handle_st App_device_init( void ) {
     return (device_handle_st)device;
 }
 
+void App_device_deInit( void ) {
+    App_mqtt_deInit();
+    // log_error("1");
+    App_modbus_deInit();
+    // log_error("2");
+    App_pool_deInit();
+    // log_error("5");
+    App_buff_deInit( device->up_buf );
+    // log_error("3");
+    App_buff_deInit( device->down_buf );
+    // log_error("4");
+    free( device );
+}
+
+
 /**
  * @brief 	 mqtt 收到的回调函数
  * @param 	 data
@@ -176,4 +191,9 @@ void modbus_rw_task_cb( void* args ) {
 
 bool App_device_is_running( void ) {
     return device->is_running;
+}
+
+void App_device_set_running( bool isRunning ) {
+    // log_debug( "App_device_set_running----%d" , isRunning );
+    device->is_running = isRunning;
 }

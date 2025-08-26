@@ -13,8 +13,12 @@ typedef void*  device_handle_st;
 
 device_handle_st App_device_init( void );
 
+void App_device_deInit( void );
+
 
 bool App_device_is_running( void );
+
+void App_device_set_running( bool isRunning );
 
 
 #endif

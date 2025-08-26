@@ -49,10 +49,10 @@ void* App_pool_thread_func( void* arg ) {
     while (1) {
         app_pool_task_st task_st;
         ssize_t len = mq_receive( pool_st.mqueue_ID , (char*)&task_st , sizeof( app_pool_task_st ) , NULL );
-        if (len == sizeof( app_pool_task_st )) {
-            if (task_st.task) {
+        if (len == sizeof( app_pool_task_st ) && task_st.task) {
+            // if (task_st.task) {
                 task_st.task( task_st.arg );
-            }
+            // }
         }
     }
 }
@@ -75,7 +75,7 @@ gate_status_t App_pool_init( int thread_num ) {
     }
 
 
-    for (int i = 0; i < thread_num; i++) {//  by Gary: 创建线程
+    for (size_t i = 0; i < thread_num; i++) {//  by Gary: 创建线程
         int res = pthread_create(
             &pool_st.thread_IDs[i] , NULL ,
             App_pool_thread_func , NULL
@@ -107,7 +107,7 @@ gate_status_t App_pool_init( int thread_num ) {
         return ERROR;
     }
 
-    free( pool_st.thread_IDs );
+    // free( pool_st.thread_IDs );
     log_info( "线程池创建成功" );
 
     return OK;
@@ -118,11 +118,16 @@ gate_status_t App_pool_init( int thread_num ) {
  * @brief 	 反初始化
  */
 void App_pool_deInit( void ) {
+    // log_error( "000" );
     for (size_t i = 0; i < pool_st.thread_num; i++) {
+        // log_error( "第%d个" , i + 1 );
         pthread_cancel( pool_st.thread_IDs[i] );
     }
-
+    // log_error( "111" );
     mq_close( pool_st.mqueue_ID );
+    // log_error( "222" );
     mq_unlink( pool_st.mq_name );
+    // log_error( "333" );
 
+    free( pool_st.thread_IDs );
 }

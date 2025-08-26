@@ -1,20 +1,29 @@
-#include "App_device.h"
+#include "App_runner.h"
+#include "ota_version.h"
 
-
-
+/**
+ * @brief
+ * @param 	 argc 	参数个数
+ * @param 	 argv 	参数列表
+ * @return 	 int
+ */
 int main( int argc , char const* argv[] ) {
-    device_handle_st dev = App_device_init();
 
-    if (dev == NULL) {
-        log_fatal( "device初始化失败" );
-        return -1;
-    }
+    if (argc == 1) {
+        log_info( "请传入 app|ota|daemon, 来启动不同的程序" );
+    } else if (strcmp( argv[1] , "app" ) == 0) {
 
-    log_info( "device初始化成功" );
+        App_runner_run();
 
-    while (App_device_is_running) {
-        log_info( "device运行中...." );
-        sleep( 2 );
+    } else if (strcmp( argv[1] , "ota" ) == 0) {
+
+        log_info( "otaota" );
+        ota_version_check();
+
+    } else if (strcmp( argv[1] , "daemon" ) == 0) {
+
+        log_info( "daemondaemon" );
+
     }
 
     return 0;

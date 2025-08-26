@@ -17,7 +17,7 @@ ifdef SYSROOT
 endif
 
 LDLIBS += -lpaho-mqtt3c
-#LDLIBS += -lcurl
+LDLIBS += -lcurl
 #LDLIBS += -lcrypto
 LDLIBS += -lmodbus
 #modbus文件路径,toolchain前面的路径需要改为自己的工程路径
