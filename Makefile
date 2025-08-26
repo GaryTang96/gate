@@ -2,7 +2,7 @@ CC:=$(CROSS_COMPILE)gcc
 
 BOARD_DIR := $(shell pwd)/
 #改为自己开发板的ip地址
-PEER := root@192.168.56.82
+PEER := root@192.168.56.23
 # 打印警告信息
 #CFLAGS += -Wall -Wextra
 
@@ -18,7 +18,7 @@ endif
 
 LDLIBS += -lpaho-mqtt3c
 LDLIBS += -lcurl
-#LDLIBS += -lcrypto
+LDLIBS += -lcrypto
 LDLIBS += -lmodbus
 #modbus文件路径,toolchain前面的路径需要改为自己的工程路径
 #LDLIBS += -L/home/shtos/桌面/01_Projects/485_gateway/toolchain/arm-linux-gnueabihf/lib
@@ -46,7 +46,7 @@ cross-compile:
 	 SYSROOT=$(BOARD_DIR)/sysroot \
 	 make -j16
 	@scp -O $(TARGET) $(PEER):/usr/bin/$(TARGET)
-	@make clean
+# @make clean
 	@ssh -t $(PEER) /usr/bin/$(TARGET) ota
 
 cross-init:

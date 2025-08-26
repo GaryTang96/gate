@@ -51,8 +51,54 @@ uint8_t* ota_http_getText( uint8_t* url ) {
             curl_easy_strerror( res ) );
 
     // printf("%s\n", buffer);
-    // fclose(fp);
+
     curl_easy_cleanup( curl );
 
     return buffer;
+}
+
+
+/**
+ * @brief 	 下载文件
+ * @param 	 url 	路径
+ * @param 	 path_file 	保存路径
+ */
+gate_status_t ota_http_download( uint8_t* url , uint8_t path_file ) {
+    CURL* curl;
+    CURLcode res;
+
+    // 设置全局环境(整个app只需要调用一次)
+    // curl_global_init( CURL_GLOBAL_DEFAULT );
+
+    // 初始化curl
+    curl = curl_easy_init();
+
+    if (curl == NULL) {
+        log_error( "ota down failed" );
+        return NULL;
+    }
+
+    // 设置要访问的url地址
+    curl_easy_setopt( curl , CURLOPT_URL , url );
+
+    // 设置回调函数, 用来接收网站的响应的数据
+    curl_easy_setopt( curl , CURLOPT_WRITEFUNCTION , fwrite );
+
+    //  by Gary: 文件名
+    FILE* fp = fopen( path_file , "wb" );
+    if (fp == NULL) {
+        log_error( "fopen exe fail" );
+        return ERROR;
+    }
+    curl_easy_setopt( curl , CURLOPT_WRITEFUNCTION , fp );
+
+    res = curl_easy_perform( curl ); // 阻塞式请求
+
+    if (res != CURLE_OK)
+        fprintf( stderr , "curl_easy_perform() failed: %s\n" ,
+            curl_easy_strerror( res ) );
+
+    fclose( fp );
+    curl_easy_cleanup( curl );
+    return OK;
 }

@@ -14,7 +14,8 @@
         "app_device.h": "c",
         "app_mqtt.h": "c",
         "app_modbus.h": "c",
-        "ota_http.h": "c"
+        "ota_http.h": "c",
+        "sha.h": "c"
     },
     "editor.mouseWheelZoom": true,
     "terminal.integrated.mouseWheelZoom": true
